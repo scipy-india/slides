@@ -1,0 +1,14 @@
+:root {
+  --slidev-theme-primary: #0073B7;
+}
+.slidev-layout h1 {
+  color: #0073B7;
+}
+/* Fix end layout dark background */
+.slidev-layout.end {
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+.slidev-layout.end h1 {
+  color: #0073B7;
+}
