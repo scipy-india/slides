@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { execSync } from 'child_process';
-import { readdirSync, statSync, existsSync, mkdirSync, cpSync, writeFileSync, readFileSync } from 'fs';
+import { readdirSync, statSync, existsSync, mkdirSync, cpSync, copyFileSync, writeFileSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -97,7 +97,7 @@ function isUpcoming(month, year) {
   const now = new Date();
   const currentYear = now.getFullYear();
   const currentMonth = now.getMonth() + 1;
-  return year > currentYear || (year === currentYear && month >= currentMonth);
+  return year > currentYear || (year === currentYear && month > currentMonth);
 }
 
 function buildTalk(folder) {
@@ -162,6 +162,7 @@ function generateLandingPage(talks) {
         </div>
         <h2 class="talk-title">${title}</h2>
         <div class="talk-event">${talk.event}</div>
+        ${talk.topic !== talk.event ? `<div class="talk-topic">${talk.topic}</div>` : ''}
       </a>`;
   }).join('\n');
 
@@ -204,6 +205,20 @@ async function main() {
   // Generate landing page
   if (results.length > 0) {
     generateLandingPage(results);
+  }
+
+  // Copy landing/style.css → dist/style.css
+  const landingStyleSrc = join(rootDir, 'landing', 'style.css');
+  if (existsSync(landingStyleSrc)) {
+    copyFileSync(landingStyleSrc, join(distDir, 'style.css'));
+    console.log('📄 Copied style.css');
+  }
+
+  // Copy root-level *.pdf files → dist/
+  const pdfs = readdirSync(rootDir).filter(f => f.endsWith('.pdf'));
+  for (const pdf of pdfs) {
+    copyFileSync(join(rootDir, pdf), join(distDir, pdf));
+    console.log(`📄 Copied ${pdf}`);
   }
 
   console.log(`\n✨ Done! Built ${results.length}/${folders.length} presentations.`);

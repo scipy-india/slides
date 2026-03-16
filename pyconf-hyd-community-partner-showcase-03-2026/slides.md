@@ -2,7 +2,8 @@
 theme: default
 title: "SciPy India: Building Scientific Community in India"
 info: |
-  Community talk for PyConf Hyderabad 2026. Covers SciPy India's revival,
+  Presented at the PyConf Hyd open space community partner showcase, where
+  multiple communities were repping themselves. Covers SciPy India's revival,
   4 community calls, the BangPypers offline collaboration, and the road to
   an annual in-person conference.
 colorSchema: light
